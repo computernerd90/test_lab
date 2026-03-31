@@ -6,6 +6,8 @@ project(CSC325_Lab4 CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
+set(BUILD_SHARED_LIBS ON)
+
 add_library(MyLibrary src/MyLibrary.cpp)
 
 target_include_directories(MyLibrary PUBLIC include)
