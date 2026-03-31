@@ -1,0 +1,16 @@
+name: Build the Library
+run-name:
+on: [pull_request]
+jobs:
+  Build-Library:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+      - name: Prepare CMake
+        run: |
+          sudo apt install build-essential cmake
+      - name: Perform the build
+        run: |
+          cd ${{ github.workspace }}
+          cmake -B build -S .
