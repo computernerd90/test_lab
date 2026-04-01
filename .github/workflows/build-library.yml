@@ -1,0 +1,33 @@
+name: Build and Test the Library
+on: [pull_request]
+jobs:
+  Build-And-Test-Library:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+      - name: Prepare CMake and Conan
+        run: |
+          sudo apt install build-essential cmake
+          sudo pip3 install conan
+      - name: Prepare the build environment
+        run: |
+          cd ${{ github.workspace }}
+          conan profile detect --force
+          conan install . --output-folder=build --build=missing
+      - name: Perform the build
+        run: |
+          cd ${{ github.workspace }}
+          cmake --preset conan-release -B build -S .
+          cmake --build build
+      - name: Run the tests
+        run: |
+          cd ${{ github.workspace }}
+          build/MyLibraryTests
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact-${{ github.sha }}
+          path: build/*
+          retention-days: 2
+
